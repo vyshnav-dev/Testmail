@@ -22,7 +22,6 @@ const userData = async (req, res) => {
 
   try {
     const user = await User.create({ email });
-    await sendEmailCreationEmail({ email });
     res.status(200).json({ message: "success" });
   } catch (error) {
     console.error("Error:", error);
