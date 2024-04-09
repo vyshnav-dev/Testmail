@@ -7,6 +7,10 @@ import Queue from "bull";
 
 
 const emailQueue = new Queue("emailQueue", {
+  limiter: {
+    max: 2, 
+    duration: 60000, 
+  },
   redis: {
     port: REDIS_PORT,
     host: REDIS_URI,
