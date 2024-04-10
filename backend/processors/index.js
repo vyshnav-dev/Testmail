@@ -2,12 +2,16 @@
 import sendEmailCreationEmail from "../mail/sendAccountCreationEmail.js";
 import Queue from "bull";
 import { REDIS_PORT, REDIS_URI } from "../Connection/redis.js";
+import Redis from "ioredis";
+
+// Create a Redis client
+const redis = new Redis();
 
 const emailQueue = new Queue("emailQueue", {
-    limiter: {
-        max: 2, 
-        duration: 60000, 
-      },
+  limiter: {
+    max: 2,
+    duration: 60000,
+  },
   redis: {
     port: REDIS_PORT,
     host: REDIS_URI,
@@ -27,6 +31,12 @@ emailQueue.process(async (job, done) => {
   }
 });
 
-emailQueue.on("completed", (job) => {
-  console.log(`completed# ${job.id}job`);
+emailQueue.on("completed", async (job) => {
+  console.log(`completed#${job.id} job`);
+
+  await job.remove();
+
+  await redis.flushdb();
+
+  console.log("Redis database flushed successfully.");
 });

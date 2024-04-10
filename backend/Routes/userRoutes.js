@@ -1,13 +1,9 @@
-import express from "express"; 
-import { userData,emailData} from "../Controllers/userController.js";
-const router = express.Router()
+import express from "express";
+import { userData, emailData } from "../Controllers/userController.js";
+const router = express.Router();
 
-router.post("/create",userData)
+router.post("/create", userData);
 
-router.post("/send-Email",emailData)
+router.post("/send-Email", emailData);
 
-
-
-
-
-export default router
+export default router;
